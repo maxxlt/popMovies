@@ -2,12 +2,12 @@ package com.example.maxxlt.popmovies;
 
 public class Movie {
     private String thumbnail, movieTitle,releaseDate,backdropPath,overview;
-    private int voteCount;
+    private double voteCount;
 
     public Movie() {
     }
 
-    public Movie(String thumbnail, String movieTitle, String releaseDate, String backdropPath, String overview, int voteCount) {
+    public Movie(String thumbnail, String movieTitle, String releaseDate, String backdropPath, String overview, double voteCount) {
         this.thumbnail = thumbnail;
         this.movieTitle = movieTitle;
         this.releaseDate = releaseDate;
@@ -56,11 +56,11 @@ public class Movie {
         this.overview = overview;
     }
 
-    public int getVoteCount() {
+    public double getVoteCount() {
         return voteCount;
     }
 
-    public void setVoteCount(int voteCount) {
+    public void setVoteCount(double voteCount) {
         this.voteCount = voteCount;
     }
 }

@@ -19,7 +19,7 @@ public class parseMovieJson {
             JSONArray array = read.getJSONArray("results");
             for (int i = 0; i < array.length(); i++){
                 JSONObject movie = array.getJSONObject(i);
-                movieList.add(new Movie(movie.getString("poster_path"),movie.getString("title"),movie.getString("release_date"),movie.getString("backdrop_path"),movie.getString("overview"),movie.getInt("vote_count")));
+                movieList.add(new Movie(movie.getString("poster_path"),movie.getString("title"),movie.getString("release_date"),movie.getString("backdrop_path"),movie.getString("overview"),movie.getDouble("vote_average")));
             }
             return movieList;
         }

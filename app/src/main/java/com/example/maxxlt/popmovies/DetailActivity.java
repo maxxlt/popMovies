@@ -31,7 +31,7 @@ public class DetailActivity extends AppCompatActivity {
         String releaseDateString = intent.getExtras().getString("RELEASE_DATE");
         String backdrop = intent.getExtras().getString("BACKDROP_PATH");
         String overviewString = intent.getExtras().getString("OVERVIEW");
-        String vote = Integer.toString(intent.getExtras().getInt("VOTE_COUNT"));
+        String vote = Double.toString(intent.getExtras().getDouble("VOTE_COUNT"));
 
 
         Picasso.get().load("http://image.tmdb.org/t/p/w185"+thumbnailString).into(thumbnail);
