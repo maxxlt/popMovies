@@ -3,17 +3,27 @@ package com.example.maxxlt.popmovies;
 public class Movie {
     private String thumbnail, movieTitle,releaseDate,backdropPath,overview;
     private double voteCount;
+    private int movieID;
 
     public Movie() {
     }
 
-    public Movie(String thumbnail, String movieTitle, String releaseDate, String backdropPath, String overview, double voteCount) {
+    public Movie(String thumbnail, String movieTitle, String releaseDate, String backdropPath, String overview, double voteCount, int movieID) {
         this.thumbnail = thumbnail;
         this.movieTitle = movieTitle;
         this.releaseDate = releaseDate;
         this.backdropPath = backdropPath;
         this.overview = overview;
         this.voteCount = voteCount;
+        this.movieID = movieID;
+    }
+
+    public int getMovieID() {
+        return movieID;
+    }
+
+    public void setMovieID(int movieID) {
+        this.movieID = movieID;
     }
 
     public String getThumbnail() {

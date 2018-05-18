@@ -49,6 +49,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         intent.putExtra("BACKDROP_PATH",movie.getBackdropPathPath());
         intent.putExtra("OVERVIEW",movie.getOverview());
         intent.putExtra("VOTE_COUNT",movie.getVoteCount());
+        intent.putExtra("ID",movie.getMovieID());
         getContext().startActivity(intent);
     }
 
