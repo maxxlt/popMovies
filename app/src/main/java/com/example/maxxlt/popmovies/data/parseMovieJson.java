@@ -1,13 +1,15 @@
-package com.example.maxxlt.popmovies;
+package com.example.maxxlt.popmovies.data;
 
 import android.util.Log;
+
+import com.example.maxxlt.popmovies.data.Movie;
+import com.example.maxxlt.popmovies.data.MovieAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class parseMovieJson {
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();

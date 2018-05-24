@@ -1,4 +1,4 @@
-package com.example.maxxlt.popmovies;
+package com.example.maxxlt.popmovies.data;
 
 public class Movie {
     private String thumbnail, movieTitle,releaseDate,backdropPath,overview;

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PopularMovies</string>
+    <string name="app_name">Popular Movies</string>
     <string name="base_url">http://image.tmdb.org/t/p/</string>
     <string name="size_w92">w92</string>
     <string name="size_w154">w154</string>
@@ -10,6 +10,8 @@
     <string name="size_original">original</string>
     <string name="sortPopular">Popular</string>
     <string name="sortTopRated">Top Rated</string>
+    <string name="sortFavorite">Favorite</string>
     <string name="popular" translatable="false">popular</string>
     <string name="top_rated" translatable="false">top_rated</string>
+    <string name="test">TESTING TITLE</string>
 </resources>

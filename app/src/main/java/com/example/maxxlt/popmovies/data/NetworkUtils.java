@@ -1,4 +1,4 @@
-package com.example.maxxlt.popmovies;
+package com.example.maxxlt.popmovies.data;
 
 import android.net.Uri;
 import android.util.Log;

@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <GridView
+    <android.support.v7.widget.Toolbar
+        app:titleTextColor="@android:color/white"
+        android:layout_alignParentTop="true"
+        android:id="@+id/toolbar_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+    </android.support.v7.widget.Toolbar>
+    <GridView
+        android:layout_below="@+id/spinner"
+        android:id="@+id/movies_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:columnWidth="185dp"
-        android:layout_marginTop="35dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="0dp"
         android:horizontalSpacing="0dp"
+        android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
+        android:verticalSpacing="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:context=".MainActivityFragment"
-        android:id="@+id/movies_grid">
-    </GridView>
+        tools:layout_editor_absoluteX="0dp"></GridView>
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="144dp"
         android:layout_height="27dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/toolbar_main" />
+
+
+</RelativeLayout>

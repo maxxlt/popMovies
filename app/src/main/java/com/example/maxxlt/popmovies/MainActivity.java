@@ -1,6 +1,5 @@
 package com.example.maxxlt.popmovies;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,10 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Spinner;
 
+import com.example.maxxlt.popmovies.data.Movie;
+import com.example.maxxlt.popmovies.data.MovieAdapter;
+import com.example.maxxlt.popmovies.data.NetworkUtils;
+import com.example.maxxlt.popmovies.data.parseMovieJson;
+
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
 
@@ -26,10 +28,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
 
         spinner = findViewById(R.id.spinner);
         gridView = findViewById(R.id.movies_grid);
-        String sortName[] = {"",getResources().getString(R.string.sortPopular), getResources().getString(R.string.sortTopRated)};
+        String sortName[] = {"",getResources().getString(R.string.sortPopular), getResources().getString(R.string.sortTopRated),getResources().getString(R.string.sortFavorite)};
 
         spinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,sortName);
         spinner.setAdapter(spinnerAdapter);

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.squareup.picasso.Picasso;
 
@@ -19,7 +20,6 @@ public class DetailActivity extends AppCompatActivity {
 
         ImageView backdrop = findViewById(R.id.backdrop_iv);
         ImageView thumbnail = findViewById(R.id.movie_poster_iv);
-        TextView movieTitle = findViewById(R.id.movie_title_tv);
         TextView releaseDate = findViewById(R.id.movie_releaseDate_tv);
         TextView rating = findViewById(R.id.movie_rating_tv);
         TextView overview = findViewById(R.id.movie_overview_tv);
@@ -35,9 +35,12 @@ public class DetailActivity extends AppCompatActivity {
 
         Picasso.get().load("http://image.tmdb.org/t/p/original"+backdropString).into(backdrop);
         Picasso.get().load("http://image.tmdb.org/t/p/w185"+thumbnailString).into(thumbnail);
-        movieTitle.setText(movieTitleString);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar_detail);
+        toolbar.setTitle(movieTitleString);
+        setSupportActionBar(toolbar);
         releaseDate.setText(releaseDateString);
         rating.setText(vote);
         overview.setText(overviewString);
     }
+
 }
