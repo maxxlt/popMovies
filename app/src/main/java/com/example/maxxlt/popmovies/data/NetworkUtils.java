@@ -12,10 +12,10 @@ import java.util.Scanner;
 
 public class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
-    private static final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/movie/";
+    public static final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/movie/";
     private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/";
     private static final String API = "api_key";
-    private static final String API_KEY = "4c3ebe95dd4d936b48ab51afa19e7cf3";
+    public static final String API_KEY = "4c3ebe95dd4d936b48ab51afa19e7cf3";
     public static URL buildURL(String sortPath){
         Uri builtUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
                 .appendPath(sortPath)
