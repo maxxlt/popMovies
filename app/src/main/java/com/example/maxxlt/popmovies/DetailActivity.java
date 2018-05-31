@@ -1,16 +1,22 @@
 package com.example.maxxlt.popmovies;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.example.maxxlt.popmovies.data.MovieContract;
 import com.example.maxxlt.popmovies.data.NetworkUtils;
 import com.example.maxxlt.popmovies.extraData.Review;
 import com.example.maxxlt.popmovies.extraData.ReviewAdapter;
@@ -32,9 +38,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailActivity extends AppCompatActivity {
+
+    FloatingActionButton floatingActionButton;
+    FloatingActionButton floatingActionButton2;
+
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_main);
+
         Intent intent = getIntent();
         PopulateUI(intent);
         int movieID = intent.getExtras().getInt("ID");
@@ -76,6 +87,8 @@ public class DetailActivity extends AppCompatActivity {
 
             }
         });
+        buttonHandler(intent);
+
     }
     private void PopulateUI(Intent intent){
 
@@ -95,10 +108,71 @@ public class DetailActivity extends AppCompatActivity {
         Picasso.get().load("http://image.tmdb.org/t/p/original"+backdropString).into(backdrop);
         Picasso.get().load("http://image.tmdb.org/t/p/w185"+thumbnailString).into(thumbnail);
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar_detail);
+
+
         toolbar.setTitle(movieTitleString);
         setSupportActionBar(toolbar);
         releaseDate.setText(releaseDateString);
         rating.setText(vote);
         overview.setText(overviewString);
+    }
+    private void buttonHandler(final Intent intent){
+        floatingActionButton = findViewById(R.id.floating_button);
+        floatingActionButton2 = findViewById(R.id.floating_button2);
+        final int movieID = intent.getExtras().getInt("ID");
+        boolean foundMovie = lookUpMovie(movieID);
+        if (foundMovie){
+            floatingActionButton.setVisibility(floatingActionButton.INVISIBLE);
+            floatingActionButton2.setVisibility(floatingActionButton2.VISIBLE);
+        }
+        else {
+            floatingActionButton.setVisibility(floatingActionButton.VISIBLE);
+            floatingActionButton2.setVisibility(floatingActionButton2.INVISIBLE);
+        }
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String thumbnailString = intent.getExtras().getString("THUMBNAIL");
+                String movieTitleString = intent.getExtras().getString("MOVIE_TITLE");
+                String releaseDateString = intent.getExtras().getString("RELEASE_DATE");
+                String backdropString = intent.getExtras().getString("BACKDROP_PATH");
+                String overviewString = intent.getExtras().getString("OVERVIEW");
+                String vote = Double.toString(intent.getExtras().getDouble("VOTE_COUNT"));
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(MovieContract.MovieEntry.COLUMN_THUMBNAIL,thumbnailString);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE,movieTitleString);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE,releaseDateString);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_BACKDROP,backdropString);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW,overviewString);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_VOTE_COUNT,vote);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID,movieID);
+                Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);if(uri != null) {
+                    Toast.makeText(getBaseContext(), "Movie is added to Favorites", Toast.LENGTH_LONG).show();
+                }
+                floatingActionButton.setVisibility(floatingActionButton.INVISIBLE);
+                floatingActionButton2.setVisibility(floatingActionButton2.VISIBLE);
+            }
+        });
+        floatingActionButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String idToDelete = Integer.toString(movieID);
+                long movieDeleted = getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI,"movieID = ?",new String[]{idToDelete});
+                if (movieDeleted != 0){
+                    Toast.makeText(getBaseContext(), "Movie is deleted from Favorites", Toast.LENGTH_LONG).show();
+                }
+                floatingActionButton.setVisibility(floatingActionButton.VISIBLE);
+                floatingActionButton2.setVisibility(floatingActionButton2.INVISIBLE);
+            }
+        });
+    }
+    private boolean lookUpMovie(int id){
+        String idToFind = Integer.toString(id);
+        String[] projection = new String[]{"movieID"};
+        Cursor cursor = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,projection,"movieID = ?",new String[]{idToFind}, null);
+        if (cursor.moveToFirst())
+            return true;
+        else
+            return false;
     }
 }

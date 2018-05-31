@@ -18,6 +18,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailActivity"/>
+        <provider
+            android:authorities="com.example.maxxlt.popmovies"
+            android:name="com.example.maxxlt.popmovies.data.MovieContentProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>
