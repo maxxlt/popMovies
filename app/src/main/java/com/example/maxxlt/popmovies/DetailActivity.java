@@ -42,7 +42,7 @@ public class DetailActivity extends AppCompatActivity {
     FloatingActionButton floatingActionButton;
     FloatingActionButton floatingActionButton2;
 
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_main);
 
@@ -56,20 +56,20 @@ public class DetailActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retroData retroData = retrofit.create(com.example.maxxlt.popmovies.extraData.retroData.class);
-        Call<trailerResults> trailerCall = retroData.getListTrailers(movieID,NetworkUtils.API_KEY);
-        Call<reviewResults> reviewCall = retroData.getListReviws(movieID,NetworkUtils.API_KEY);
+        Call<trailerResults> trailerCall = retroData.getListTrailers(movieID, NetworkUtils.API_KEY);
+        Call<reviewResults> reviewCall = retroData.getListReviws(movieID, NetworkUtils.API_KEY);
         trailerCall.enqueue(new Callback<trailerResults>() {
             @Override
             public void onResponse(Call<trailerResults> call, Response<trailerResults> response) {
                 trailerResults trailerResults = response.body();
                 ArrayList<Trailer> trailerArrayList = new ArrayList<>(Arrays.asList(trailerResults.getResults()));
-                trailerView.setAdapter(new TrailerAdapter(DetailActivity.this,trailerArrayList));
+                trailerView.setAdapter(new TrailerAdapter(DetailActivity.this, trailerArrayList));
                 trailerView.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
             }
 
             @Override
             public void onFailure(Call<trailerResults> call, Throwable t) {
-                Log.d("Error",t.getMessage());
+                Log.d("Error", t.getMessage());
             }
         });
 
@@ -78,8 +78,8 @@ public class DetailActivity extends AppCompatActivity {
             public void onResponse(Call<reviewResults> call, Response<reviewResults> response) {
                 reviewResults reviewResults = response.body();
                 ArrayList<Review> reviewArrayList = new ArrayList<>(Arrays.asList(reviewResults.getResults()));
-                reviewView.setAdapter(new ReviewAdapter(DetailActivity.this,reviewArrayList));
-                reviewView.setLayoutManager(new LinearLayoutManager(DetailActivity.this,LinearLayoutManager.HORIZONTAL,false));
+                reviewView.setAdapter(new ReviewAdapter(DetailActivity.this, reviewArrayList));
+                reviewView.setLayoutManager(new LinearLayoutManager(DetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
             }
 
             @Override
@@ -90,7 +90,8 @@ public class DetailActivity extends AppCompatActivity {
         buttonHandler(intent);
 
     }
-    private void PopulateUI(Intent intent){
+
+    private void PopulateUI(Intent intent) {
 
         ImageView backdrop = findViewById(R.id.backdrop_iv);
         ImageView thumbnail = findViewById(R.id.movie_poster_iv);
@@ -105,8 +106,8 @@ public class DetailActivity extends AppCompatActivity {
         String overviewString = intent.getExtras().getString("OVERVIEW");
         String vote = Double.toString(intent.getExtras().getDouble("VOTE_COUNT"));
 
-        Picasso.get().load("http://image.tmdb.org/t/p/original"+backdropString).into(backdrop);
-        Picasso.get().load("http://image.tmdb.org/t/p/w185"+thumbnailString).into(thumbnail);
+        Picasso.get().load("http://image.tmdb.org/t/p/original" + backdropString).into(backdrop);
+        Picasso.get().load("http://image.tmdb.org/t/p/w185" + thumbnailString).into(thumbnail);
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar_detail);
 
 
@@ -116,16 +117,16 @@ public class DetailActivity extends AppCompatActivity {
         rating.setText(vote);
         overview.setText(overviewString);
     }
-    private void buttonHandler(final Intent intent){
+
+    private void buttonHandler(final Intent intent) {
         floatingActionButton = findViewById(R.id.floating_button);
         floatingActionButton2 = findViewById(R.id.floating_button2);
         final int movieID = intent.getExtras().getInt("ID");
         boolean foundMovie = lookUpMovie(movieID);
-        if (foundMovie){
+        if (foundMovie) {
             floatingActionButton.setVisibility(floatingActionButton.INVISIBLE);
             floatingActionButton2.setVisibility(floatingActionButton2.VISIBLE);
-        }
-        else {
+        } else {
             floatingActionButton.setVisibility(floatingActionButton.VISIBLE);
             floatingActionButton2.setVisibility(floatingActionButton2.INVISIBLE);
         }
@@ -139,14 +140,15 @@ public class DetailActivity extends AppCompatActivity {
                 String overviewString = intent.getExtras().getString("OVERVIEW");
                 String vote = Double.toString(intent.getExtras().getDouble("VOTE_COUNT"));
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(MovieContract.MovieEntry.COLUMN_THUMBNAIL,thumbnailString);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE,movieTitleString);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE,releaseDateString);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_BACKDROP,backdropString);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW,overviewString);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_VOTE_COUNT,vote);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID,movieID);
-                Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);if(uri != null) {
+                contentValues.put(MovieContract.MovieEntry.COLUMN_THUMBNAIL, thumbnailString);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movieTitleString);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, releaseDateString);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_BACKDROP, backdropString);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, overviewString);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_VOTE_COUNT, vote);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movieID);
+                Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+                if (uri != null) {
                     Toast.makeText(getBaseContext(), "Movie is added to Favorites", Toast.LENGTH_LONG).show();
                 }
                 floatingActionButton.setVisibility(floatingActionButton.INVISIBLE);
@@ -157,8 +159,8 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String idToDelete = Integer.toString(movieID);
-                long movieDeleted = getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI,"movieID = ?",new String[]{idToDelete});
-                if (movieDeleted != 0){
+                long movieDeleted = getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, "movieID = ?", new String[]{idToDelete});
+                if (movieDeleted != 0) {
                     Toast.makeText(getBaseContext(), "Movie is deleted from Favorites", Toast.LENGTH_LONG).show();
                 }
                 floatingActionButton.setVisibility(floatingActionButton.VISIBLE);
@@ -166,10 +168,11 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
     }
-    private boolean lookUpMovie(int id){
+
+    private boolean lookUpMovie(int id) {
         String idToFind = Integer.toString(id);
         String[] projection = new String[]{"movieID"};
-        Cursor cursor = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,projection,"movieID = ?",new String[]{idToFind}, null);
+        Cursor cursor = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, projection, "movieID = ?", new String[]{idToFind}, null);
         if (cursor.moveToFirst())
             return true;
         else

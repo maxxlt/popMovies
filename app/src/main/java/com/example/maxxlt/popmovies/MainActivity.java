@@ -29,6 +29,7 @@ import com.example.maxxlt.popmovies.data.parseMovieJson;
 
 import java.net.URL;
 import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     RecyclerView mRecyclerView;
     FavoritesAdapter favoritesAdapter;
     private static final int FAVORITES_LOADER_ID = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +50,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         spinner = findViewById(R.id.spinner);
         mRecyclerView = findViewById(R.id.movies_grid);
-        String sortName[] = {"",getResources().getString(R.string.sortPopular), getResources().getString(R.string.sortTopRated),getResources().getString(R.string.sortFavorite)};
+        String sortName[] = {"", getResources().getString(R.string.sortPopular), getResources().getString(R.string.sortTopRated), getResources().getString(R.string.sortFavorite)};
 
-        spinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,sortName);
+        spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sortName);
         spinner.setAdapter(spinnerAdapter);
 
 
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+                switch (position) {
                     case 0:
                         break;
                     case 1:
@@ -85,21 +87,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onResume() {
         super.onResume();
-        if (spinner.getSelectedItemPosition()==3){
+        if (spinner.getSelectedItemPosition() == 3) {
             getSupportLoaderManager().restartLoader(FAVORITES_LOADER_ID, null, MainActivity.this);
         }
     }
 
     //Loading data according to the sort
-    private void loadData(String sort){
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        mRecyclerView.setAdapter(new MovieAdapter(this,new ArrayList<Movie>()));
+    private void loadData(String sort) {
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setAdapter(new MovieAdapter(this, new ArrayList<Movie>()));
         new FetchMovieTask().execute(sort);
     }
 
-    private void loadLoader(){
+    private void loadLoader() {
         favoritesAdapter = new FavoritesAdapter(this);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         getSupportLoaderManager().initLoader(FAVORITES_LOADER_ID, null, this);
         mRecyclerView.setAdapter(favoritesAdapter);
         getSupportLoaderManager().restartLoader(FAVORITES_LOADER_ID, null, MainActivity.this);
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //Used from T09.07 To-Do list Exercise
         return new AsyncTaskLoader<Cursor>(this) {
             Cursor mFavoritesData = null;
+
             @Override
             protected void onStartLoading() {
                 if (mFavoritesData != null) {
@@ -138,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     return null;
                 }
             }
+
             public void deliverResult(Cursor data) {
                 mFavoritesData = data;
                 super.deliverResult(data);
@@ -155,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         favoritesAdapter.swapCursor(null);
     }
 
-    public class FetchMovieTask extends AsyncTask<String, Void, String>{
+    public class FetchMovieTask extends AsyncTask<String, Void, String> {
         private MovieAdapter adapter;
 
         //Handling HTTP request in background thread
@@ -170,8 +174,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
                 return jsonMovieResponse;
 
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
@@ -182,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         protected void onPostExecute(String jsonFile) {
             adapter = (MovieAdapter) mRecyclerView.getAdapter();
             ArrayList<Movie> movies = parseMovieJson.parsemovieJson(jsonFile);
-            if (movies != null){
+            if (movies != null) {
                 adapter.setMovieArrayList(movies);
                 adapter.notifyDataSetChanged();
             }

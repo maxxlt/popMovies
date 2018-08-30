@@ -22,14 +22,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
     ArrayList<Movie> movieArrayList;
     Context context;
-    public MovieAdapter (Context context, ArrayList<Movie> movies){
+
+    public MovieAdapter(Context context, ArrayList<Movie> movies) {
         this.context = context;
         this.movieArrayList = movies;
     }
+
     @NonNull
     @Override
     public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.thumbnail_main,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.thumbnail_main, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -55,21 +57,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView thumbnail;
 
-        public ViewHolder (View itemView){
+        public ViewHolder(View itemView) {
             super(itemView);
             thumbnail = itemView.findViewById(R.id.thumbnail_iv);
         }
     }
 
-    private void intentDetailActivity(Movie movie){
-        Intent intent = new Intent(context,DetailActivity.class);
+    private void intentDetailActivity(Movie movie) {
+        Intent intent = new Intent(context, DetailActivity.class);
         intent.putExtra("THUMBNAIL", movie.getThumbnail());
         intent.putExtra("MOVIE_TITLE", movie.getMovieTitle());
-        intent.putExtra("RELEASE_DATE",movie.getReleaseDate());
-        intent.putExtra("BACKDROP_PATH",movie.getBackdropPathPath());
-        intent.putExtra("OVERVIEW",movie.getOverview());
-        intent.putExtra("VOTE_COUNT",movie.getVoteCount());
-        intent.putExtra("ID",movie.getMovieID());
+        intent.putExtra("RELEASE_DATE", movie.getReleaseDate());
+        intent.putExtra("BACKDROP_PATH", movie.getBackdropPathPath());
+        intent.putExtra("OVERVIEW", movie.getOverview());
+        intent.putExtra("VOTE_COUNT", movie.getVoteCount());
+        intent.putExtra("ID", movie.getMovieID());
         context.startActivity(intent);
     }
 
